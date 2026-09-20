@@ -1,0 +1,47 @@
+cff-version: 1.2.0
+message: "If this repository supports your work, cite the associated conference paper."
+title: "IoT Smart Wearable Health Monitor"
+type: software
+version: 0.1.0
+authors:
+  - family-names: Abo-Zahhad
+    given-names: Mohammed
+  - family-names: Sayed
+    given-names: Mohammed S.
+  - family-names: Abd El-Malek
+    given-names: Ahmed H.
+  - family-names: Fawaz
+    given-names: Abdelrahman
+  - family-names: Zakaria
+    given-names: Ahmed A.
+  - family-names: Wahdan
+    given-names: Ahmed E.
+  - family-names: Elsayed
+    given-names: Moaz
+  - family-names: Taghian
+    given-names: Aya
+preferred-citation:
+  type: conference-paper
+  title: "An IoT-based Smart Wearable System for Remote Health Monitoring"
+  authors:
+    - family-names: Abo-Zahhad
+      given-names: Mohammed
+    - family-names: Sayed
+      given-names: Mohammed S.
+    - family-names: Abd El-Malek
+      given-names: Ahmed H.
+    - family-names: Fawaz
+      given-names: Abdelrahman
+    - family-names: Zakaria
+      given-names: Ahmed A.
+    - family-names: Wahdan
+      given-names: Ahmed E.
+    - family-names: Elsayed
+      given-names: Moaz
+    - family-names: Taghian
+      given-names: Aya
+  collection-title: "2021 9th International Japan-Africa Conference on Electronics, Communications, and Computations (JAC-ECC)"
+  year: 2021
+  start: 192
+  end: 197
+  doi: 10.1109/JAC-ECC54461.2021.9691431
