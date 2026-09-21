@@ -29,7 +29,7 @@ Hardware addresses, wiring, and backend configuration are documented in [docs/ha
 
 ## Software
 
-The maintained package separates hardware access, sensor models, acquisition control, and CSV serialization:
+The Python package separates hardware access, sensor models, acquisition control, and CSV serialization:
 
 - `hardware.py` implements the MPU6050, MPU9250, MLX90614, and MAX30100 interfaces.
 - `collector.py` coordinates sampling, moving averages, and output records.
@@ -85,7 +85,7 @@ Column definitions and file-level notes are provided in [docs/data.md](docs/data
 |-- scripts/                reproducible data-visualization tools
 |-- docs/                   hardware, data, and integration documentation
 |-- docs/assets/            device figures, diagrams, and generated plots
-`-- legacy/                 original project scripts retained for reference
+`-- legacy/                 original acquisition and display scripts
 ```
 
 ## Documentation
@@ -93,11 +93,8 @@ Column definitions and file-level notes are provided in [docs/data.md](docs/data
 - [Hardware and wiring](docs/hardware.md)
 - [Data files and schema](docs/data.md)
 - [Node-RED integration](docs/node-red.md)
-- [Source inventory](docs/source-inventory.md)
 - [Original script notes](legacy/README.md)
 
 ## Publication
 
-A. M. Elsayed, A. M. Ghuniem, M. A. Khafagy, and M. A. M. El-Bendary, “An IoT-based Smart Wearable System for Remote Health Monitoring,” *2021 International Japan-Africa Conference on Electronics, Communications and Computations (JAC-ECC)*, 2021. [https://doi.org/10.1109/JAC-ECC54461.2021.9691431](https://doi.org/10.1109/JAC-ECC54461.2021.9691431)
-
-The publication PDF is not distributed with this repository. Copyright and usage terms are stated in [NOTICE.md](NOTICE.md).
+M. Abo-Zahhad et al., “An IoT-based Smart Wearable System for Remote Health Monitoring,” *2021 International Japan-Africa Conference on Electronics, Communications and Computations (JAC-ECC)*, pp. 192–197, 2021. [https://doi.org/10.1109/JAC-ECC54461.2021.9691431](https://doi.org/10.1109/JAC-ECC54461.2021.9691431)

@@ -40,7 +40,7 @@ pythonpath = ["src"]
 testpaths = ["tests"]
 
 [tool.ruff]
-extend-exclude = ["legacy", ".qa"]
+extend-exclude = [".qa"]
 line-length = 100
 target-version = "py310"
 

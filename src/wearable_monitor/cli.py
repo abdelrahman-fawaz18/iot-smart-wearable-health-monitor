@@ -29,7 +29,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--max30100",
         action="store_true",
-        help="Record raw red/IR FIFO values; no BPM or SpO2 calculation is applied",
+        help="Record raw red and infrared FIFO values",
     )
     parser.add_argument("--limit", type=int, help="Stop after this many samples")
     parser.add_argument("--quiet", action="store_true", help="Do not print each sample")

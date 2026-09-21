@@ -43,7 +43,7 @@
     <rect x="980" y="155" width="330" height="105" rx="16" fill="#ffffff" stroke="#c4b5fd" stroke-width="2"/>
     <rect x="980" y="155" width="12" height="105" rx="6" fill="#7c3aed"/>
     <text x="1015" y="198" font-size="21" font-weight="700" fill="#0f172a">CSV recordings</text>
-    <text x="1015" y="230" font-size="16" fill="#475569">Local evidence and later analysis</text>
+    <text x="1015" y="230" font-size="16" fill="#475569">Local storage and analysis</text>
 
     <rect x="980" y="290" width="330" height="105" rx="16" fill="#ffffff" stroke="#fecdd3" stroke-width="2"/>
     <rect x="980" y="290" width="12" height="105" rx="6" fill="#e11d48"/>
@@ -67,10 +67,6 @@
   <text x="900" y="323" text-anchor="middle" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15" font-weight="700" fill="#475569">local / Wi-Fi</text>
 
   <g font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14">
-    <circle cx="78" cy="594" r="6" fill="#16a34a"/>
-    <text x="94" y="599" fill="#475569">Implemented in project code</text>
-    <circle cx="380" cy="594" r="6" fill="#f59e0b"/>
-    <text x="396" y="599" fill="#475569">Documented design interface</text>
     <text x="1310" y="599" text-anchor="end" fill="#64748b">Research prototype, 2021</text>
   </g>
 </svg>

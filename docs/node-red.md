@@ -11,8 +11,4 @@ The documented temperature path contains:
 3. A function node that formats the payload.
 4. Dashboard, debug, CSV, and file outputs.
 
-The IMU flow follows the same acquisition pattern and adds an MQTT output node. Network-specific broker settings are not included in the repository.
-
-## Repository contents
-
-The project screenshot and temperature CSV export document the deployed flow behavior. Node-RED flow JSON, package manifests, dashboard source, and broker configuration are not part of the repository.
+The IMU flow follows the same acquisition pattern and adds an MQTT output node for downstream processing.

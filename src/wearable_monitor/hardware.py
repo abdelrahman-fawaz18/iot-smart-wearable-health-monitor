@@ -107,7 +107,7 @@ class Mlx90614Sensor:
 
 
 class Max30100RawSensor:
-    """Read raw red and infrared samples without claiming medical measurements."""
+    """Read raw red and infrared samples from the MAX30100 FIFO."""
 
     ADDRESS = 0x57
     FIFO_WRITE_POINTER = 0x02

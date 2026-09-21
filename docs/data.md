@@ -8,7 +8,7 @@
 Gender-and-subject_Location_Activity_Type.csv
 ```
 
-For example, `M01_L_Wlk_Mlt.csv` identifies subject `M01`, left-side placement, walking activity, and the `Mlt` acquisition type. The `Sgl` and `Mlt` labels are retained exactly as recorded in the project files.
+For example, `M01_L_Wlk_Mlt.csv` identifies subject `M01`, left-side placement, walking activity, and the `Mlt` acquisition type. `Sgl` and `Mlt` are project-specific acquisition labels.
 
 | File | Samples | Recorded span |
 | --- | ---: | ---: |
@@ -34,7 +34,7 @@ Each walking file contains the following columns:
 
 ## Temperature capture
 
-`data/recordings/temperature/MLX_test.csv` contains the Node-RED MLX90614 export. Each line stores object and ambient temperature values in the original JSON-like two-field CSV format. The source values are retained unchanged.
+`data/recordings/temperature/MLX_test.csv` contains the Node-RED MLX90614 export. Each line stores object and ambient temperature values in a JSON-like two-field CSV format.
 
 ## Collector output schema
 
@@ -51,6 +51,6 @@ ppg_ir_raw,ppg_red_raw
 
 Columns for disabled sensors remain empty. Moving averages are calculated only from samples already observed.
 
-## Recording metadata
+## Timestamp notes
 
-Subject identifiers are anonymous project codes. The dataset package does not include demographic attributes, clinical annotations, calibration records, or a separate sampling-clock specification. `M02_L_Wlk_Sgl.csv` contains a 195.9-second timestamp interval; `M01_L_Wlk_Sgl.csv` crosses an hour boundary.
+Subject identifiers are anonymous project codes. `M02_L_Wlk_Sgl.csv` contains a 195.9-second timestamp interval, and `M01_L_Wlk_Sgl.csv` crosses an hour boundary.

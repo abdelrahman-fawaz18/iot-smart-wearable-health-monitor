@@ -33,6 +33,6 @@ The command-line collector provides two motion backends:
 
 MLX90614 readings are converted from the sensor's Kelvin register format to degrees Celsius. The MAX30100 backend stores the FIFO's raw red and infrared samples.
 
-## Design files
+## PCB layout
 
-The publication figure documents the two PCB copper layers and the 65 mm by 30 mm board outline. Source CAD, Gerber files, an enclosure model, and a fabrication bill of materials are outside this repository.
+The two-layer interconnect board measures 65 mm by 30 mm. The upper and lower copper layouts route the Raspberry Pi header to the MPU, MLX90614, and MAX30100 connections.
