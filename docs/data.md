@@ -2,41 +2,43 @@
 
 ## Walking recordings
 
-`data/recordings/walking` contains eight recovered CSV recordings. The files use the original naming pattern described in the project presentation:
+`data/recordings/walking` contains eight CSV recordings using the original project naming pattern:
 
 ```text
 Gender-and-subject_Location_Activity_Type.csv
 ```
 
-For example, `M01_L_Wlk_Sgl.csv` identifies subject `M01`, left-side placement, walking activity, and the original `Sgl` acquisition type. The surviving notes do not define the `Sgl` and `Mlt` abbreviations beyond identifying them as the recording type, so this repository leaves them unchanged.
+For example, `M01_L_Wlk_Mlt.csv` identifies subject `M01`, left-side placement, walking activity, and the `Mlt` acquisition type. The `Sgl` and `Mlt` labels are retained exactly as recorded in the project files.
 
-| File | Samples |
-| --- | ---: |
-| `M01_L_Wlk_Mlt.csv` | 1,993 |
-| `M01_L_Wlk_Sgl.csv` | 559 |
-| `M02_L_Wlk_Mlt.csv` | 1,109 |
-| `M02_L_Wlk_Sgl.csv` | 465 |
-| `M03_L_Wlk_Mlt.csv` | 556 |
-| `M03_L_Wlk_Sgl.csv` | 619 |
-| `M04_L_Wlk_Mlt.csv` | 327 |
-| `M04_L_Wlk_Sgl.csv` | 651 |
+| File | Samples | Recorded span |
+| --- | ---: | ---: |
+| `M01_L_Wlk_Mlt.csv` | 1,993 | 92.9 s |
+| `M01_L_Wlk_Sgl.csv` | 559 | Crosses an hour boundary |
+| `M02_L_Wlk_Mlt.csv` | 1,109 | 64.6 s |
+| `M02_L_Wlk_Sgl.csv` | 465 | 265.0 s |
+| `M03_L_Wlk_Mlt.csv` | 556 | 86.8 s |
+| `M03_L_Wlk_Sgl.csv` | 619 | 35.1 s |
+| `M04_L_Wlk_Mlt.csv` | 327 | 45.1 s |
+| `M04_L_Wlk_Sgl.csv` | 651 | 98.6 s |
 
-Each file has the following columns:
+Each walking file contains the following columns:
 
-| Column | Meaning |
+| Column | Measurement |
 | --- | --- |
-| `Time` | Original wall-clock fragment in `mm:ss.s` form |
+| `Time` | Wall-clock fragment in `mm:ss.s` form |
 | `Acc-X`, `Acc-Y`, `Acc-Z` | Acceleration axes in g |
 | `Gyro-X`, `Gyro-Y`, `Gyro-Z` | Angular velocity axes in degrees per second |
 | `Ambient Temp` | MLX90614 ambient temperature in degrees Celsius |
 
+`M01_L_Wlk_Mlt.csv` is used for the repository overview figure because it provides the largest continuous recording: 1,993 samples over 92.9 seconds, with a maximum adjacent timestamp interval of 0.5 seconds.
+
 ## Temperature capture
 
-`data/recordings/temperature/MLX_test.csv` is the recovered Node-RED temperature export. Each line contains object and ambient temperature values, but the original flow wrote a JSON-like payload into two CSV fields without a header. It is preserved as evidence rather than normalized in place.
+`data/recordings/temperature/MLX_test.csv` contains the Node-RED MLX90614 export. Each line stores object and ambient temperature values in the original JSON-like two-field CSV format. The source values are retained unchanged.
 
-## Current collector schema
+## Collector output schema
 
-New recordings use explicit units and UTC timestamps:
+The command-line collector writes explicit units and UTC timestamps:
 
 ```text
 timestamp_utc,
@@ -47,10 +49,8 @@ ambient_temp_c,object_temp_c,
 ppg_ir_raw,ppg_red_raw
 ```
 
-Sensors that are not enabled produce empty cells. The collector averages only samples already observed. This removes the artificial low-temperature startup values caused by the original three-sample buffers being initialized with zeros.
+Columns for disabled sensors remain empty. Moving averages are calculated only from samples already observed.
 
-## Limits on interpretation
+## Recording metadata
 
-The recordings contain anonymized subject codes and sensor values, not clinical records. The original sampling clock, calibration procedure, sensor placement protocol, and subject metadata were not preserved. These files support software demonstrations and historical analysis, but they do not form a validated biomedical dataset.
-
-Some recordings contain discontinuous wall-clock segments. The generated figure leaves those intervals blank rather than drawing lines across periods with no samples.
+Subject identifiers are anonymous project codes. The dataset package does not include demographic attributes, clinical annotations, calibration records, or a separate sampling-clock specification. `M02_L_Wlk_Sgl.csv` contains a 195.9-second timestamp interval; `M01_L_Wlk_Sgl.csv` crosses an hour boundary.

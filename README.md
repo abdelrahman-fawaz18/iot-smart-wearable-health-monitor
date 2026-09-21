@@ -1,46 +1,42 @@
 # IoT Smart Wearable Health Monitor
 
-Research prototype for collecting movement and temperature signals on a Raspberry Pi and forwarding the resulting records to an IoT visualization layer. The work began as an undergraduate graduation project at Egypt-Japan University of Science and Technology in 2021.
+[![CI](https://github.com/abdelrahman-fawaz18/iot-smart-wearable-health-monitor/actions/workflows/ci.yml/badge.svg)](https://github.com/abdelrahman-fawaz18/iot-smart-wearable-health-monitor/actions/workflows/ci.yml)
+
+Raspberry Pi software and project data for a wrist-worn health-monitoring research prototype developed at Egypt-Japan University of Science and Technology. The system combines inertial, infrared temperature, and optical sensors on a shared I2C bus, with CSV acquisition and Node-RED visualization.
 
 ![System architecture](docs/assets/system-architecture.svg)
 
-## Project status
+## System design
 
-This repository is a cleaned engineering archive, not a production medical device. It combines the surviving source code and recordings with a maintainable data-acquisition package. The reconstruction stays within the demonstrated scope of the original prototype.
+The published device uses a Raspberry Pi Zero W as the acquisition and communication controller. Sensor readings are timestamped, written to local CSV files, and made available to Node-RED for processing and browser-based monitoring.
 
-| Area | Recovered evidence | Repository status |
+| Component | Role | Repository implementation |
 | --- | --- | --- |
-| Raspberry Pi acquisition | Python loggers for motion and temperature | Refactored and covered by hardware-independent tests |
-| Motion sensing | Integrated MPU6050 recordings; later MPU9250 acquisition code | Both backends are documented; MPU6050 remains the default because it produced the archived recordings |
-| Temperature | MLX90614 integration and captured readings | Supported in the collector |
-| Pulse oximetry | MAX30100 register reader and an experimental console test | Raw red/IR capture only; no unverified BPM or SpO2 conversion is presented |
-| Node-RED | Screenshots of the working temperature and IMU flows | Flow export was not recovered, so the original deployment cannot be imported directly |
-| PCB | Raster layouts in the publication source | Manufacturing files, schematics, Gerbers, and bill of materials are missing |
-| Prototype data | Eight anonymized walking recordings and one temperature capture | Preserved under `data/recordings` |
+| MPU9250 | Nine-axis motion sensing | Supported through `mpu9250-jmdev` |
+| MPU6050 | Six-axis motion sensing used in the project recordings | Built-in register-level backend |
+| MLX90614 | Ambient and object temperature | Built-in register-level backend |
+| MAX30100 | Red and infrared photoplethysmography | Raw FIFO acquisition |
+| Raspberry Pi Zero W | Sampling, storage, and communication | Python command-line collector |
+| Node-RED | Flow processing and browser visualization | Project flow documentation and screenshots |
 
-The publication PDF is intentionally excluded. See the [published paper](https://doi.org/10.1109/JAC-ECC54461.2021.9691431) for the full system description.
+## Prototype hardware
 
-## Hardware represented here
+![Two-layer PCB layout and wrist-mounted health-monitoring device](docs/assets/device-and-pcb.png)
 
-- Raspberry Pi Zero W running Raspberry Pi OS
-- MPU9250 nine-axis IMU in the paper design
-- MPU6050 six-axis IMU in the recovered integrated prototype
-- MLX90614 infrared temperature sensor
-- MAX30100 optical pulse-oximetry sensor
-- Optional SSD1306 OLED used during bench testing
-- Node-RED for local collection and browser-based visualization
+The custom two-layer interconnect board routes the shared I2C bus between the Raspberry Pi header, motion sensor, temperature sensor, and optical sensor. The assembled electronics are enclosed in a wrist-mounted housing with the sensing surface positioned against the inner wrist.
 
-The sensors share the Raspberry Pi I2C bus. Confirm each breakout board's supply and logic levels before wiring it. The Raspberry Pi GPIO is not 5 V tolerant.
+Hardware addresses, wiring, and backend configuration are documented in [docs/hardware.md](docs/hardware.md).
 
-## Recovered prototype
+## Software
 
-![Breadboard prototype with Raspberry Pi, OLED, MPU6050, and MLX90614](docs/assets/prototype-bench.png)
+The maintained package separates hardware access, sensor models, acquisition control, and CSV serialization:
 
-This bench setup produced the surviving motion and temperature recordings. It shows the Raspberry Pi, OLED, MPU6050, and MLX90614 before the planned custom PCB and wrist enclosure.
+- `hardware.py` implements the MPU6050, MPU9250, MLX90614, and MAX30100 interfaces.
+- `collector.py` coordinates sampling, moving averages, and output records.
+- `models.py` defines the typed measurement and CSV schemas.
+- `cli.py` provides the `wearable-monitor` command.
 
-## Quick start
-
-The tests and plotting tool run on any development machine. Live collection requires Linux I2C access on a Raspberry Pi.
+Install the development and Raspberry Pi hardware dependencies:
 
 ```bash
 python -m venv .venv
@@ -49,59 +45,59 @@ python -m pip install -e ".[dev,hardware]"
 pytest
 ```
 
-Enable I2C on the Raspberry Pi, verify that the devices appear, then start a recording:
+Start a recording with the MPU6050 and MLX90614 backends:
 
 ```bash
-sudo raspi-config
-i2cdetect -y 1
 wearable-monitor --imu mpu6050 --output recordings/session.csv
 ```
 
-Use the paper-era IMU backend when an MPU9250 is installed:
+Select the MPU9250 backend for the published IMU configuration:
 
 ```bash
 wearable-monitor --imu mpu9250 --output recordings/session.csv
 ```
 
-Add `--max30100` to record raw photoplethysmography channels. The command does not report heart rate or oxygen saturation because the surviving project files do not contain a validated conversion pipeline.
+The optional `--max30100` flag adds raw red and infrared PPG channels to the output record.
 
-## Recorded data
+## Project data
 
-![Walking recording](docs/assets/walking-recording.svg)
+Eight walking recordings and one temperature capture are included under `data/recordings`. The figure below presents the 1,993-sample `M01_L_Wlk_Mlt.csv` trial over a continuous 92.9-second interval. The temperature panel begins after the logger's two-sample moving-average initialization.
 
-The archived walking files contain acceleration, angular velocity, and ambient temperature. They retain their original names and values. The plot above is generated from `M01_L_Wlk_Sgl.csv`:
+![Walking trial sensor recording](docs/assets/walking-recording.svg)
+
+Generate the figure directly from the source CSV:
 
 ```bash
 python scripts/plot_recording.py \
-  data/recordings/walking/M01_L_Wlk_Sgl.csv \
+  data/recordings/walking/M01_L_Wlk_Mlt.csv \
   docs/assets/walking-recording.svg
 ```
 
-See [data documentation](docs/data.md) for the schema and known quality issues.
+Column definitions and file-level notes are provided in [docs/data.md](docs/data.md).
 
-## Repository layout
+## Repository structure
 
 ```text
 .
-|-- src/wearable_monitor/   maintained acquisition package
-|-- tests/                  tests that use simulated I2C and sensor inputs
-|-- data/recordings/        recovered, anonymized prototype recordings
-|-- scripts/                reproducible plotting utility
-|-- docs/                   hardware, data, cloud, and recovery notes
-|-- docs/assets/            diagrams, prototype evidence, and generated plots
-`-- legacy/                 selected original team-authored scripts
+|-- src/wearable_monitor/   acquisition package
+|-- tests/                  hardware-independent unit tests
+|-- data/recordings/        project sensor recordings
+|-- scripts/                reproducible data-visualization tools
+|-- docs/                   hardware, data, and integration documentation
+|-- docs/assets/            device figures, diagrams, and generated plots
+`-- legacy/                 original project scripts retained for reference
 ```
 
 ## Documentation
 
 - [Hardware and wiring](docs/hardware.md)
 - [Data files and schema](docs/data.md)
-- [Node-RED evidence](docs/node-red.md)
-- [Recovery audit and exclusions](docs/recovery-audit.md)
-- [Legacy source notes](legacy/README.md)
+- [Node-RED integration](docs/node-red.md)
+- [Source inventory](docs/source-inventory.md)
+- [Original script notes](legacy/README.md)
 
-## Important limitations
+## Publication
 
-The prototype was built for research and teaching. It has not undergone medical-device verification, clinical validation, electrical safety testing, or regulatory review. Do not use it for diagnosis, treatment, alarms, or safety-critical monitoring.
+A. M. Elsayed, A. M. Ghuniem, M. A. Khafagy, and M. A. M. El-Bendary, “An IoT-based Smart Wearable System for Remote Health Monitoring,” *2021 International Japan-Africa Conference on Electronics, Communications and Computations (JAC-ECC)*, 2021. [https://doi.org/10.1109/JAC-ECC54461.2021.9691431](https://doi.org/10.1109/JAC-ECC54461.2021.9691431)
 
-The repository does not include an open-source license. Source and data are available for review; no permission to redistribute or reuse them is implied. The conference paper remains subject to its publisher's terms.
+The publication PDF is not distributed with this repository. Copyright and usage terms are stated in [NOTICE.md](NOTICE.md).

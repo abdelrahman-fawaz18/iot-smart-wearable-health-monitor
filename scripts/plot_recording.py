@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render a recovered walking recording as a self-contained SVG."""
+"""Render a walking recording as a self-contained SVG."""
 
 from __future__ import annotations
 
@@ -79,9 +79,10 @@ def _panel(
     unit: str,
     series: list[tuple[str, str]],
     show_x_axis: bool,
+    start_index: int = 0,
 ) -> str:
     left, width, height = 105, 1315, 190
-    values = [value for column, _ in series for value in data[column]]
+    values = [value for column, _ in series for value in data[column][start_index:]]
     y_min, y_max = min(values), max(values)
     padding = max((y_max - y_min) * 0.08, 0.1)
     y_min -= padding
@@ -105,7 +106,14 @@ def _panel(
 
     for column, label in series:
         for points in _segments(
-            data["time"], data[column], left, top, width, height, y_min, y_max
+            data["time"][start_index:],
+            data[column][start_index:],
+            left,
+            top,
+            width,
+            height,
+            y_min,
+            y_max,
         ):
             elements.append(
                 f'<polyline points="{points}" fill="none" stroke="{COLORS[label]}" '
@@ -140,7 +148,7 @@ def _panel(
 def create_plot(data: dict[str, list[float]], output: Path, title: str) -> None:
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1010" viewBox="0 0 1500 1010" role="img" aria-labelledby="title description">
   <title id="title">{escape(title)}</title>
-  <desc id="description">Acceleration, angular velocity, and ambient temperature from a recovered walking recording.</desc>
+  <desc id="description">Acceleration, angular velocity, and ambient temperature from a walking trial.</desc>
   <style>
     text {{ font-family: Inter, "Segoe UI", Arial, sans-serif; fill: #334155; }}
     .heading {{ font-size: 28px; font-weight: 700; fill: #0f172a; }}
@@ -153,10 +161,10 @@ def create_plot(data: dict[str, list[float]], output: Path, title: str) -> None:
   </style>
   <rect width="1500" height="1010" fill="#f8fafc"/>
   <text x="70" y="52" class="heading">{escape(title)}</text>
-  <text x="70" y="80" class="subheading">Original sensor values; no filtering or resampling applied</text>
+  <text x="70" y="80" class="subheading">Recorded sensor values; temperature begins after the two-sample logger initialization</text>
   {_panel(data, 145, "Acceleration", "g", [("Acc-X", "X"), ("Acc-Y", "Y"), ("Acc-Z", "Z")], False)}
   {_panel(data, 430, "Angular velocity", "degrees / second", [("Gyro-X", "X"), ("Gyro-Y", "Y"), ("Gyro-Z", "Z")], False)}
-  {_panel(data, 715, "Ambient temperature", "degrees C", [("Ambient Temp", "Temp")], True)}
+  {_panel(data, 715, "Ambient temperature", "degrees C", [("Ambient Temp", "Temp")], True, start_index=2)}
 </svg>
 '''
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -167,7 +175,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("input", type=Path)
     parser.add_argument("output", type=Path)
-    parser.add_argument("--title", default="Recovered walking recording: M01 / left wrist / Sgl")
+    parser.add_argument("--title", default="Walking trial: M01 / left wrist / Mlt")
     args = parser.parse_args()
 
     create_plot(load_recording(args.input), args.output, args.title)

@@ -1,6 +1,6 @@
-# Legacy source
+# Original project scripts
 
-This directory preserves selected team-authored scripts from the 2021 prototype. They are historical references, not the supported entry points.
+This directory contains selected team-authored scripts from the 2021 prototype. They document the original implementation; the package under `src/wearable_monitor` is the maintained entry point.
 
 | File | Original purpose |
 | --- | --- |

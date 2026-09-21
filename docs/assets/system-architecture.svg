@@ -12,7 +12,7 @@
 
   <rect width="1400" height="650" rx="28" fill="#f8fafc"/>
   <text x="70" y="68" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="30" font-weight="700" fill="#0f172a">Prototype data path</text>
-  <text x="70" y="102" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="17" fill="#64748b">Paper configuration and recovered software boundary</text>
+  <text x="70" y="102" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="17" fill="#64748b">Published hardware configuration and project software boundary</text>
 
   <g filter="url(#shadow)" font-family="Inter,Segoe UI,Arial,sans-serif">
     <rect x="70" y="150" width="290" height="105" rx="16" fill="#ffffff" stroke="#bfdbfe" stroke-width="2"/>
@@ -68,9 +68,9 @@
 
   <g font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14">
     <circle cx="78" cy="594" r="6" fill="#16a34a"/>
-    <text x="94" y="599" fill="#475569">Recovered implementation evidence</text>
+    <text x="94" y="599" fill="#475569">Implemented in project code</text>
     <circle cx="380" cy="594" r="6" fill="#f59e0b"/>
-    <text x="396" y="599" fill="#475569">Some source artifacts missing</text>
+    <text x="396" y="599" fill="#475569">Documented design interface</text>
     <text x="1310" y="599" text-anchor="end" fill="#64748b">Research prototype, 2021</text>
   </g>
 </svg>
